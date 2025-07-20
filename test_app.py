@@ -1,7 +1,14 @@
-from app import add
+from app import app
+
+def test_home():
+    client = app.test_client()
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"Welcome" in response.data
 
 def test_add():
-    assert add(2, 3) == 5
-    assert add(0, 0) == 0
-    assert add(-1, 1) == 0
+    client = app.test_client()
+    response = client.get("/add?a=5&b=7")
+    assert response.status_code == 200
+    assert response.get_json() == {"sum": 12}
 
